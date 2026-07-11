@@ -9,13 +9,15 @@ const addBook = async (req, res) => {
         // The image URL comes from Cloudinary via multer
         const coverImage = req.file ? req.file.path : 'no-photo.jpg';
 
+        const stockQuantity = Number(totalStock) || 1;
+
         const book = await Book.create({
             title,
             author,
             isbn,
             category,
-            totalStock,
-            availableStock: totalStock, // Initially, all are available
+            totalStock :stockQuantity,
+            availableStock: stockQuantity, // Initially, all are available
             coverImage
         });
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { BookOpen, LogOut, User, LayoutDashboard } from 'lucide-react';
+import { BookOpen, LogOut, LayoutDashboard, Clock } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -20,28 +20,45 @@ const Navbar = () => {
           </Link>
 
           {/* Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             {user ? (
               <>
+                {/* Admin Dashboard Link (Only shows for Admins) */}
                 {user.role === 'admin' && (
-                  <Link to="/admin" className="text-gray-600 hover:text-blue-600 flex items-center space-x-1 text-sm font-medium">
+                  <Link 
+                    to="/admin" 
+                    className="text-gray-600 hover:text-blue-600 flex items-center space-x-1.5 text-sm font-medium transition-colors"
+                  >
                     <LayoutDashboard size={18} />
                     <span className="hidden sm:inline">Dashboard</span>
                   </Link>
                 )}
                 
-                <div className="flex items-center space-x-3 pl-4 border-l border-gray-200">
+                {/* User Activity Link */}
+                <Link 
+                  to="/my-history" 
+                  className="text-gray-600 hover:text-blue-600 flex items-center space-x-1.5 text-sm font-medium transition-colors"
+                >
+                  <Clock size={18} />
+                  <span>My Activity</span>
+                </Link>
+
+                {/* Profile & Logout Group */}
+                <div className="flex items-center space-x-4 pl-4 border-l border-gray-200">
                   <div className="flex items-center space-x-2">
-                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                      <User size={18} />
+                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs uppercase select-none">
+                      {user.name ? user.name.substring(0, 2) : 'US'}
                     </div>
-                    <span className="text-sm font-medium text-gray-700 hidden sm:inline">{user.name}</span>
+                    <span className="text-sm font-medium text-gray-700 hidden sm:inline">
+                      {user.name}
+                    </span>
                   </div>
                   <button 
                     onClick={logout}
                     className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                    title="Sign Out"
                   >
-                    <LogOut size={20} />
+                    <LogOut size={18} />
                   </button>
                 </div>
               </>

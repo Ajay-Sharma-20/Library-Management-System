@@ -9,6 +9,9 @@ import AdminLayout from './pages/Admin/AdminLayout';
 import AddBook from './pages/Admin/AddBook';
 import DashboardOverview from './pages/Admin/DashboardOverview';
 import PendingRequests from './pages/Admin/PendingRequests';
+import ManageBooks from './pages/Admin/ManageBooks.jsx';
+import UsersList from './pages/Admin/UsersList.jsx';
+import { AdminRoute, ProtectedRoute } from './components/ProtectedRoute.jsx';
 
 function App() {
   const { user } = useAuth();
@@ -19,14 +22,24 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
         {/* We'll add /register soon */}
-        <Route path="/my-history" element={<MyHistory />} />
 
-
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<DashboardOverview />} />
-          <Route path="add-book" element={<AddBook />} />
-          <Route path="requests" element={<PendingRequests />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/my-history" element={<MyHistory />} />
+          {/* You can add user profile, settings, etc. here later */}
         </Route>
+
+
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<DashboardOverview />} />
+            <Route path="add-book" element={<AddBook />} />
+            <Route path="manage-books" element={<ManageBooks />} />
+            <Route path="requests" element={<PendingRequests />} />
+            <Route path="users" element={<UsersList />} />
+          </Route>
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
     </Router>
